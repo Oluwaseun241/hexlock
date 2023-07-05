@@ -14,7 +14,8 @@ import (
 func main() {
   inputFilePath := flag.String("input", "", "input file path")
   outputFilePath := flag.String("output", "", "output file path")
-  
+  mode := flag.String("mode", "encrypt", "encryption mode")
+
   flag.Parse()
 
   if *inputFilePath == "" || *outputFilePath == "" {
@@ -24,20 +25,38 @@ func main() {
   }
   
   key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG")
-
   err := encryptFile(*inputFilePath, *outputFilePath, key)
+  switch *mode {
+  case "encrypt":
+    err = encryptFile(*inputFilePath, *outputFilePath, key)
+  case "compress":
+    err = compressFile(*inputFilePath, *outputFilePath+".gz")
+  default:
+    fmt.Println("Invalid")
+    flag.PrintDefaults()
+    return
+  }
   if err != nil {
-    fmt.Println("error",err)
+    fmt.Println("Error", err)
     return
   }
   fmt.Println("Done")
-  
-  err = compressFile(*outputFilePath, *outputFilePath+".gz")
-  if err != nil {
-    return
-  }
-  fmt.Println("File encryption and compression completed sucessfully!")
 }
+
+//   err := encryptFile(*inputFilePath, *outputFilePath, key)
+//   if err != nil {
+//     fmt.Println("error",err)
+//     return
+//   }
+//   fmt.Println("Done")
+//   
+//   err = compressFile(*outputFilePath, *outputFilePath+".gz")
+//   if err != nil {
+//     return
+//   }
+//   fmt.Println("File encryption and compression completed sucessfully!")
+// }
+
 
 func encryptFile(inputFilePath, outputFilePath string,key []byte) error {
   input, err := ioutil.ReadFile(inputFilePath)
