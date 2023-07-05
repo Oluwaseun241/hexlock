@@ -1,12 +1,14 @@
 package main
 
 import (
+	"compress/gzip"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"os"
 )
 
 func main() {
@@ -29,7 +31,12 @@ func main() {
     return
   }
   fmt.Println("Done")
-
+  
+  err = compressFile(*outputFilePath, *outputFilePath+".gz")
+  if err != nil {
+    return
+  }
+  fmt.Println("File encryption and compression completed sucessfully!")
 }
 
 func encryptFile(inputFilePath, outputFilePath string,key []byte) error {
@@ -55,6 +62,30 @@ func encryptFile(inputFilePath, outputFilePath string,key []byte) error {
 
   encryptedData := aesGCM.Seal(nil, nonce, input, nil)
   err = ioutil.WriteFile(outputFilePath, encryptedData, 0644)
+  if err != nil {
+    return err
+  }
+  return nil
+}
+
+func compressFile(inputFilePath, outputFilePath string) error {
+  input, err := ioutil.ReadFile(inputFilePath)
+  if err != nil {
+    return err
+  }
+  
+  outputFile, err := os.Create(outputFilePath)
+  if err != nil {
+    return err
+  }
+
+  gzipWriter := gzip.NewWriter(outputFile)
+  if err != nil {
+    return err
+  }
+  defer gzipWriter.Close()
+  
+  _,err = gzipWriter.Write(input)
   if err != nil {
     return err
   }
