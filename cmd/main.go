@@ -1,14 +1,8 @@
 package main
 
 import (
-	"compress/gzip"
-	"crypto/aes"
-	"crypto/cipher"
-	"crypto/rand"
 	"flag"
 	"fmt"
-	"io/ioutil"
-	"os"
 
   "github.com/Oluwaseun241/hexlock/internal"
 )
@@ -30,11 +24,11 @@ func main() {
   var err error 
   switch *mode {
   case "encrypt":
-    err = internal.encryptFile(*inputFilePath, *outputFilePath, key)
+    err = internal.EncryptFile(*inputFilePath, *outputFilePath, key)
   case "decrypt":
-    err = internal.decryptFile(*inputFilePath, *outputFilePath, key)
+    err = internal.DecryptFile(*inputFilePath, *outputFilePath, key)
   case "compress":
-    err = internal.compressFile(*inputFilePath, *outputFilePath+".gz")
+    err = internal.CompressFile(*inputFilePath, *outputFilePath+".gz")
   default:
     fmt.Println("Invalid mode")
     flag.PrintDefaults()

@@ -1,3 +1,10 @@
+package internal
+
+import (
+	"compress/gzip"
+	"io/ioutil"
+	"os"
+)
 
 func compressFile(inputFilePath, outputFilePath string) error {
   input, err := ioutil.ReadFile(inputFilePath)
