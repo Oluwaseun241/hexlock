@@ -25,14 +25,16 @@ func main() {
   }
   
   key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG")
-  err := encryptFile(*inputFilePath, *outputFilePath, key)
+  var err error 
   switch *mode {
   case "encrypt":
     err = encryptFile(*inputFilePath, *outputFilePath, key)
+  case "decrypt":
+    err = decryptFile(*inputFilePath, *outputFilePath, key)
   case "compress":
     err = compressFile(*inputFilePath, *outputFilePath+".gz")
   default:
-    fmt.Println("Invalid")
+    fmt.Println("Invalid mode")
     flag.PrintDefaults()
     return
   }
@@ -42,21 +44,6 @@ func main() {
   }
   fmt.Println("Done")
 }
-
-//   err := encryptFile(*inputFilePath, *outputFilePath, key)
-//   if err != nil {
-//     fmt.Println("error",err)
-//     return
-//   }
-//   fmt.Println("Done")
-//   
-//   err = compressFile(*outputFilePath, *outputFilePath+".gz")
-//   if err != nil {
-//     return
-//   }
-//   fmt.Println("File encryption and compression completed sucessfully!")
-// }
-
 
 func encryptFile(inputFilePath, outputFilePath string,key []byte) error {
   input, err := ioutil.ReadFile(inputFilePath)
@@ -87,6 +74,41 @@ func encryptFile(inputFilePath, outputFilePath string,key []byte) error {
   return nil
 }
 
+func decryptFile(inputFilePath, outputFilePath string, key []byte) error {
+  input, err := ioutil.ReadFile(inputFilePath)
+  if err != nil {
+    return err
+  }
+
+  block, err := aes.NewCipher(key)
+  if err != nil {
+    return err
+  }
+
+  aesGCM, err := cipher.NewGCM(block)
+  if err != nil {
+    return err
+  }
+
+  nonceSize := aesGCM.NonceSize()
+  if len (input) < nonceSize {
+    return fmt.Errorf("invalid encrypted data")
+  }
+
+  nonce, input := input[:nonceSize], input[nonceSize:]
+
+  decryptedData, err := aesGCM.Open(nil, nonce, input, nil)
+  if err != nil {
+    return err
+  }
+
+  err = ioutil.WriteFile(outputFilePath, decryptedData, 0644)
+  if err != nil {
+    return err
+  }
+  return nil
+}
+
 func compressFile(inputFilePath, outputFilePath string) error {
   input, err := ioutil.ReadFile(inputFilePath)
   if err != nil {
@@ -97,6 +119,7 @@ func compressFile(inputFilePath, outputFilePath string) error {
   if err != nil {
     return err
   }
+  defer outputFile.Close()
 
   gzipWriter := gzip.NewWriter(outputFile)
   if err != nil {
