@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func compressFile(inputFilePath, outputFilePath string) error {
+func CompressFile(inputFilePath, outputFilePath string) error {
   input, err := ioutil.ReadFile(inputFilePath)
   if err != nil {
     return err
