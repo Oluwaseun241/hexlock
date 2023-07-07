@@ -5,6 +5,7 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"fmt"
+	"io"
 	"io/ioutil"
 )
 
@@ -28,9 +29,13 @@ func EncryptFile(inputFilePath, outputFilePath string,key []byte) error {
   if _, err := rand.Read(nonce); err != nil {
     return err
   }
+  
+  if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
+    return err
+  }
 
-  encryptedData := aesGCM.Seal(nil, nonce, input, nil)
-  err = ioutil.WriteFile(outputFilePath, encryptedData, 0644)
+  encryptedData := aesGCM.Seal(nonce, nonce, input, nil)
+  err = ioutil.WriteFile(outputFilePath, encryptedData, 0777)
   if err != nil {
     return err
   }
@@ -65,7 +70,7 @@ func DecryptFile(inputFilePath, outputFilePath string, key []byte) error {
     return err
   }
 
-  err = ioutil.WriteFile(outputFilePath, decryptedData, 0644)
+  err = ioutil.WriteFile(outputFilePath, decryptedData, 0777)
   if err != nil {
     return err
   }
