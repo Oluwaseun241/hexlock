@@ -4,13 +4,13 @@ import (
 	"flag"
 	"fmt"
 
-  "github.com/Oluwaseun241/hexlock/internal"
+	"github.com/Oluwaseun241/hexlock/internal"
 )
 
 func main() {
-  inputFilePath := flag.String("input", "", "input file path")
-  outputFilePath := flag.String("output", "", "output file path")
-  mode := flag.String("mode", "encrypt", "encryption mode")
+  inputFilePath := flag.String("i", "", "input file path")
+  outputFilePath := flag.String("o", "", "output file path")
+  mode := flag.String("mode", "encrypt", "encryption mode(encrypt, decrypt, compress)")
 
   flag.Parse()
 
@@ -20,7 +20,8 @@ func main() {
     return
   }
   
-  key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG")
+  key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG") 
+  /* key := generateRandomKey()  */
   var err error 
   switch *mode {
   case "encrypt":
@@ -38,5 +39,13 @@ func main() {
     fmt.Println("Error", err)
     return
   }
-  fmt.Println("Done")
+  fmt.Println("Operation sucessfull!")
 }
+
+// func generateRandomKey() []byte {
+//   key := make([]byte, 32)
+//   if _, err := rand.Read(key); err != nil {
+//     panic(err)
+//   }
+//   return key
+// }
