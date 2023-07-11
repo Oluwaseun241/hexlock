@@ -2,12 +2,11 @@ package cmd
 
 import (
 	"compress/gzip"
-	"io/ioutil"
 	"os"
 )
 
 func CompressFile(inputFilePath, outputFilePath string) error {
-  input, err := ioutil.ReadFile(inputFilePath)
+  input, err := os.ReadFile(inputFilePath)
   if err != nil {
     return err
   }
