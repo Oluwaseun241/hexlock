@@ -8,8 +8,8 @@ import (
 	"os"
 )
 
-func EncryptFile(inputFilePath, outputFilePath string,key []byte) error {
-  input, err := os.ReadFile(inputFilePath)
+func EncryptFile(inputPaths, outputPaths string,key []byte) error {
+  input, err := os.ReadFile(inputPaths)
   if err != nil {
     return err
   }
@@ -35,7 +35,7 @@ func EncryptFile(inputFilePath, outputFilePath string,key []byte) error {
   }
 
   encryptedData := aesGCM.Seal(nonce, nonce, input, nil)
-  err = os.WriteFile(outputFilePath, encryptedData, 0777)
+  err = os.WriteFile(outputPaths, encryptedData, 0777)
   if err != nil {
     return err
   }

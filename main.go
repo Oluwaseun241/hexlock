@@ -21,8 +21,8 @@ func main() {
     return
   }
 
-  inputPaths := splitFilePath(*inputFilePath)
-  outputPaths := splitFilePath(*outputFilePath)
+  inputPaths := splitFilePaths(*inputFilePath)
+  outputPaths := splitFilePaths(*outputFilePath)
 
   if len(inputPaths) != len(outputPaths) {
     fmt.Println("input and output file counts do not match")
@@ -34,9 +34,15 @@ func main() {
   var err error 
   switch *mode {
   case "encrypt":
-    err = cmd.EncryptFile(*inputFilePath, *outputFilePath, key)
+    for i := 0; i < len(inputPaths); i++ {
+      err = cmd.EncryptFile(inputPaths[i], outputPaths[i], key)
+    }
+    //err = cmd.EncryptFile(inputPaths, outputPaths, key)
   case "decrypt":
-    err = cmd.DecryptFile(*inputFilePath, *outputFilePath, key)
+    for i := 0; i < len(inputPaths); i++ {
+      cmd.DecryptFile(inputPaths[i], outputPaths[i], key)
+    }
+    //err = cmd.DecryptFile(inputPaths, outputPaths, key)
   case "compress":
     err = cmd.CompressFile(*inputFilePath, *outputFilePath+".gz")
   default:
@@ -51,8 +57,8 @@ func main() {
   fmt.Println("Operation sucessfull!")
 }
 
-func splitFilePath(filepaths string) []string {
-  return filepath.SplitList(filepaths)
+func splitFilePaths(filePaths string) []string {
+  return filepath.SplitList(filePaths)
 }
 // func generateRandomKey() []byte {
 //   key := make([]byte, 32)
