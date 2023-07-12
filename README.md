@@ -9,6 +9,30 @@ compression using AES encryption and gzip compression.
 - Decrypt encrypted files
 - Compress files using gzip compression
 
+## Usage
+
+`./hexlock [options]`
+
+Options:
+-i
+input file path
+-o
+output file path
+-mode
+encryption mode (encrypt, decrypt, compress) (default "encrypt")
+
+```
+# Encrypt file
+./hexlock -i [filepath] -o [filepath] -mode encrypt
+# Decrypt an encrypted file
+./hexlock -i [filepath] -o [filepath] -mode decrypt
+# Compress file
+./hexlock -i [filepath] -o [filepath] -mode compress
+
+```
+
+> For multiple files separate by comma
+
 ## Todo
 
 Encrypting and Decrypting multiple files at once(if possible a dir)
