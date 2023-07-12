@@ -13,14 +13,6 @@ compression using AES encryption and gzip compression.
 
 `./hexlock [options]`
 
-Options:
--i
-input file path
--o
-output file path
--mode
-encryption mode (encrypt, decrypt, compress) (default "encrypt")
-
 ```
 # Encrypt file
 ./hexlock -i [filepath] -o [filepath] -mode encrypt
@@ -35,5 +27,5 @@ encryption mode (encrypt, decrypt, compress) (default "encrypt")
 
 ## Todo
 
-Encrypting and Decrypting multiple files at once(if possible a dir)
-Progress bar
+- Encrypting and Decrypting multiple files at once(if possible a dir)
+- Progress bar

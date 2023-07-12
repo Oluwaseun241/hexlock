@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"path/filepath"
+	"strings"
 
 	"github.com/Oluwaseun241/hexlock/cmd"
 )
@@ -37,12 +37,10 @@ func main() {
     for i := 0; i < len(inputPaths); i++ {
       err = cmd.EncryptFile(inputPaths[i], outputPaths[i], key)
     }
-    //err = cmd.EncryptFile(inputPaths, outputPaths, key)
   case "decrypt":
     for i := 0; i < len(inputPaths); i++ {
       cmd.DecryptFile(inputPaths[i], outputPaths[i], key)
     }
-    //err = cmd.DecryptFile(inputPaths, outputPaths, key)
   case "compress":
     err = cmd.CompressFile(*inputFilePath, *outputFilePath+".gz")
   default:
@@ -58,7 +56,7 @@ func main() {
 }
 
 func splitFilePaths(filePaths string) []string {
-  return filepath.SplitList(filePaths)
+  return strings.Split(filePaths, ",")
 }
 // func generateRandomKey() []byte {
 //   key := make([]byte, 32)

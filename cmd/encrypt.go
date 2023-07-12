@@ -42,8 +42,8 @@ func EncryptFile(inputPaths, outputPaths string,key []byte) error {
   return nil
 }
 
-func DecryptFile(inputFilePath, outputFilePath string, key []byte) error {
-  input, err := os.ReadFile(inputFilePath) 
+func DecryptFile(inputPaths, outputPaths string, key []byte) error {
+  input, err := os.ReadFile(inputPaths) 
   if err != nil {
     return err
   }
@@ -70,7 +70,7 @@ func DecryptFile(inputFilePath, outputFilePath string, key []byte) error {
     return err
   }
 
-  err = os.WriteFile(outputFilePath, decryptedData, 0777)
+  err = os.WriteFile(outputPaths, decryptedData, 0777)
   if err != nil {
     return err
   }
