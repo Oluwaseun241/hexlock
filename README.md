@@ -27,5 +27,5 @@ compression using AES encryption and gzip compression.
 
 ## Todo
 
-- Encrypting and Decrypting multiple files at once(if possible a dir)
-- Progress bar
+- [x] Encrypting and Decrypting multiple files at once(if possible a dir)
+- [ ] Progress bar
