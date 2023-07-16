@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/Oluwaseun241/hexlock/cmd"
+	"github.com/cheggaaa/pb/v3"
 )
 
 func main() {
@@ -30,38 +31,41 @@ func main() {
   }
   
   key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG") 
-  /* key := generateRandomKey()  */
+ 
+  totalFiles := len(inputPaths)
+  progressBar := pb.StartNew(totalFiles)
+
   var err error 
   switch *mode {
   case "encrypt":
-    for i := 0; i < len(inputPaths); i++ {
+    for i := 0; i < totalFiles; i++ {
       err = cmd.EncryptFile(inputPaths[i], outputPaths[i], key)
     }
+  progressBar.Increment()
   case "decrypt":
-    for i := 0; i < len(inputPaths); i++ {
+    for i := 0; i < totalFiles; i++ {
       cmd.DecryptFile(inputPaths[i], outputPaths[i], key)
     }
+  progressBar.Increment()
   case "compress":
-    err = cmd.CompressFile(*inputFilePath, *outputFilePath+".gz")
+  for i := 0; i < totalFiles; i++ {
+      err = cmd.CompressFile(inputPaths[i],outputPaths[i]+".gz")
+    }
+  progressBar.Increment()
   default:
     fmt.Println("Invalid mode")
     flag.PrintDefaults()
     return
   }
   if err != nil {
+    progressBar.Finish()
     fmt.Println("Error", err)
     return
   }
+  progressBar.Finish()
   fmt.Println("Operation sucessfull!")
 }
 
 func splitFilePaths(filePaths string) []string {
   return strings.Split(filePaths, ",")
 }
-// func generateRandomKey() []byte {
-//   key := make([]byte, 32)
-//   if _, err := rand.Read(key); err != nil {
-//     panic(err)
-//   }
-//   return key
-// }
