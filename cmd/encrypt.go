@@ -4,9 +4,30 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
+  "github.com/spf13/cobra"
 	"fmt"
 	"os"
 )
+
+var EncryptCmd = &cobra.Command{
+	Use:   "encrypt",
+	Short: "Encrypt files",
+	Long:  "Encrypt files using AES-GCM encryption.",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Println("Encrypting files...")
+		inputPaths, _ := cmd.Flags().GetStringSlice("input")
+		outputPaths, _ := cmd.Flags().GetStringSlice("output")
+		key := []byte("machester1") // Replace with your encryption key
+		for i := 0; i < len(inputPaths); i++ {
+			err := EncryptFile(inputPaths[i], outputPaths[i], key)
+			if err != nil {
+				fmt.Println("Error encrypting:", err)
+			} else {
+				fmt.Println("Encryption successful!")
+			}
+		}
+	},
+}
 
 func EncryptFile(inputPaths, outputPaths string,key []byte) error {
   input, err := os.ReadFile(inputPaths)
@@ -42,37 +63,8 @@ func EncryptFile(inputPaths, outputPaths string,key []byte) error {
   return nil
 }
 
-func DecryptFile(inputPaths, outputPaths string, key []byte) error {
-  input, err := os.ReadFile(inputPaths) 
-  if err != nil {
-    return err
-  }
-
-  block, err := aes.NewCipher(key)
-  if err != nil {
-    return err
-  }
-
-  aesGCM, err := cipher.NewGCM(block)
-  if err != nil {
-    return err
-  }
-
-  nonceSize := aesGCM.NonceSize()
-  if len (input) < nonceSize {
-    return fmt.Errorf("invalid encrypted data")
-  }
-
-  nonce, input := input[:nonceSize], input[nonceSize:]
-
-  decryptedData, err := aesGCM.Open(nil, nonce, input, nil)
-  if err != nil {
-    return err
-  }
-
-  err = os.WriteFile(outputPaths, decryptedData, 0777)
-  if err != nil {
-    return err
-  }
-  return nil
+func init() {
+	EncryptCmd.Flags().StringSliceP("input", "i", []string{}, "input file paths (comma-separated)")
+	EncryptCmd.Flags().StringSliceP("output", "o", []string{}, "output file paths (comma-separated)")
+	rootCmd.AddCommand(EncryptCmd)
 }
