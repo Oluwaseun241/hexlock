@@ -40,28 +40,35 @@ func main() {
   case "encrypt":
     for i := 0; i < totalFiles; i++ {
       err = cmd.EncryptFile(inputPaths[i], outputPaths[i], key)
+      if err != nil {
+        fmt.Println("Error", err)
+        return
+      }
+      progressBar.Increment()
     }
-  progressBar.Increment()
+  // Decrypt
   case "decrypt":
     for i := 0; i < totalFiles; i++ {
       cmd.DecryptFile(inputPaths[i], outputPaths[i], key)
+      progressBar.Increment()
     }
-  progressBar.Increment()
+  // Compress
   case "compress":
   for i := 0; i < totalFiles; i++ {
       err = cmd.CompressFile(inputPaths[i],outputPaths[i]+".gz")
+      if err != nil {
+        progressBar.Finish()
+        fmt.Println("Error", err)
+        return
+      }
+      progressBar.Increment()
     }
-  progressBar.Increment()
   default:
     fmt.Println("Invalid mode")
     flag.PrintDefaults()
     return
   }
-  if err != nil {
-    progressBar.Finish()
-    fmt.Println("Error", err)
-    return
-  }
+
   progressBar.Finish()
   fmt.Println("Operation sucessfull!")
 }
