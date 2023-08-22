@@ -4,9 +4,10 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
-  "github.com/spf13/cobra"
-	"fmt"
 	"os"
+
+	"github.com/fatih/color"
+	"github.com/spf13/cobra"
 )
 
 var EncryptCmd = &cobra.Command{
@@ -14,16 +15,18 @@ var EncryptCmd = &cobra.Command{
 	Short: "Encrypt files",
 	Long:  "Encrypt files using AES-GCM encryption.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Encrypting files...")
-		inputPaths, _ := cmd.Flags().GetStringSlice("input")
+		color.Cyan("Encrypting files...")
+		
+    inputPaths, _ := cmd.Flags().GetStringSlice("input")
 		outputPaths, _ := cmd.Flags().GetStringSlice("output")
-		key := []byte("machester1") // Replace with your encryption key
-		for i := 0; i < len(inputPaths); i++ {
+		key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG")
+		
+    for i := 0; i < len(inputPaths); i++ {
 			err := EncryptFile(inputPaths[i], outputPaths[i], key)
 			if err != nil {
-				fmt.Println("Error encrypting:", err)
+				color.Red("Error encrypting: %v", err)
 			} else {
-				fmt.Println("Encryption successful!")
+				color.Green("Encryption successful for %s", inputPaths)
 			}
 		}
 	},
@@ -66,5 +69,7 @@ func EncryptFile(inputPaths, outputPaths string,key []byte) error {
 func init() {
 	EncryptCmd.Flags().StringSliceP("input", "i", []string{}, "input file paths (comma-separated)")
 	EncryptCmd.Flags().StringSliceP("output", "o", []string{}, "output file paths (comma-separated)")
-	rootCmd.AddCommand(EncryptCmd)
+	DecryptCmd.MarkFlagRequired("input")
+  DecryptCmd.MarkFlagRequired("output")
+  rootCmd.AddCommand(EncryptCmd)
 }

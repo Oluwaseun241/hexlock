@@ -1,10 +1,11 @@
 package cmd
 
 import (
-  "fmt"
 	"compress/gzip"
 	"os"
-  "github.com/spf13/cobra" 
+
+	"github.com/fatih/color"
+	"github.com/spf13/cobra"
 )
 
 var CompressCmd = &cobra.Command{
@@ -12,15 +13,17 @@ var CompressCmd = &cobra.Command{
 	Short: "Compress files",
 	Long:  "Compress files using Gzip compression.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Compressing files...")
-		inputPaths, _ := cmd.Flags().GetStringSlice("input")
+		color.Cyan("Compressing files...")
+		
+    inputPaths, _ := cmd.Flags().GetStringSlice("input")
 		outputPaths, _ := cmd.Flags().GetStringSlice("output")
-		for i := 0; i < len(inputPaths); i++ {
+		
+    for i := 0; i < len(inputPaths); i++ {
 			err := CompressFile(inputPaths[i], outputPaths[i]+".gz")
 			if err != nil {
-				fmt.Println("Error compressing:", err)
+				color.Red("Error compressing: %v", err)
 			} else {
-				fmt.Println("Compression successful!")
+				color.Green("Compression successful for %s", inputPaths)
 			}
 		}
 	},
