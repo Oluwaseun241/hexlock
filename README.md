@@ -17,7 +17,7 @@ compression using AES encryption and gzip compression.
 ## Installation
 
 ```
-go install https://github.com/Oluwaseun241/hexlock
+go install github.com/Oluwaseun241/hexlock
 ```
 
 ## Usage
