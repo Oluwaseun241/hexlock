@@ -9,6 +9,9 @@ compression using AES encryption and gzip compression.
 - Decrypt encrypted files
 - Compress files using gzip compression
 
+- [x] Encrypting and Decrypting multiple files at once(if possible a dir)
+- [x] Progress bar
+
 ## Usage
 
 `./hexlock [options]`
@@ -25,7 +28,6 @@ compression using AES encryption and gzip compression.
 
 > For multiple files separate by comma
 
-## Todo
+## License
 
-- [x] Encrypting and Decrypting multiple files at once(if possible a dir)
-- [x] Progress bar
+This project is licensed under the [MIT Licence]().
