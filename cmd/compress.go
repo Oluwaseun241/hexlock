@@ -72,3 +72,7 @@ func init() {
   CompressCmd.MarkFlagRequired("output")
   rootCmd.AddCommand(CompressCmd)
 }
+
+func NewRootCmd() *cobra.Command {
+  return rootCmd
+}
