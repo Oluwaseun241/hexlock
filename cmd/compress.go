@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/fatih/color"
+	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 )
 
@@ -13,19 +14,29 @@ var CompressCmd = &cobra.Command{
 	Short: "Compress files",
 	Long:  "Compress files using Gzip compression.",
 	Run: func(cmd *cobra.Command, args []string) {
-		color.Cyan("Compressing files...")
+		//color.Cyan("Compressing files...")
 		
     inputPaths, _ := cmd.Flags().GetStringSlice("input")
 		outputPaths, _ := cmd.Flags().GetStringSlice("output")
-		
+    
+    progress := progressbar.NewOptions(len(inputPaths),
+      progressbar.OptionSetDescription("[cyan][Compressing files...][reset]"),
+      progressbar.OptionSetWriter(os.Stderr),
+      progressbar.OptionShowCount(),
+      progressbar.OptionShowBytes(true),
+      progressbar.OptionEnableColorCodes(true),
+      )
+
     for i := 0; i < len(inputPaths); i++ {
 			err := CompressFile(inputPaths[i], outputPaths[i]+".gz")
 			if err != nil {
 				color.Red("Error compressing: %v", err)
 			} else {
-				color.Green("Compression successful for %s", inputPaths)
-			}
+        progress.Add(1)
+				color.Green("\nCompression successful for %s", inputPaths[i])
+			} 
 		}
+    progress.Finish()
 	},
 }
 

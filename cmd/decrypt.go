@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/schollz/progressbar/v3"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
@@ -15,20 +16,30 @@ var DecryptCmd = &cobra.Command{
 	Short: "Decrypt files",
 	Long:  "Decrypt files using AES-GCM decryption.",
 	Run: func(cmd *cobra.Command, args []string) {
-		color.Cyan("Decrypting files...")
+		//color.Cyan("Decrypting files...")
 		
     inputPaths, _ := cmd.Flags().GetStringSlice("input")
 		outputPaths, _ := cmd.Flags().GetStringSlice("output")
 		key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG")
-		
+    
+    progress := progressbar.NewOptions(len(inputPaths),
+      progressbar.OptionSetDescription("[cyan][Decrypting files...][reset]"),
+      progressbar.OptionSetWriter(os.Stderr),
+      progressbar.OptionShowCount(),
+      progressbar.OptionShowBytes(true),
+      progressbar.OptionEnableColorCodes(true),
+      )
+
     for i := 0; i < len(inputPaths); i++ {
 			err := DecryptFile(inputPaths[i], outputPaths[i], key)
 			if err != nil {
 				color.Red("Error decrypting: %v", err)
 			} else {
-				color.Green("Decryption successful for %s", inputPaths)
+        progress.Add(1)
+				color.Green("\nDecryption successful for %s", inputPaths)
 			}
 		}
+    progress.Finish()
 	},
 }
 

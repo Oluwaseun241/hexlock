@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"os"
 
+	"github.com/schollz/progressbar/v3"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
@@ -20,15 +21,25 @@ var EncryptCmd = &cobra.Command{
     inputPaths, _ := cmd.Flags().GetStringSlice("input")
 		outputPaths, _ := cmd.Flags().GetStringSlice("output")
 		key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG")
-		
+    
+    progress := progressbar.NewOptions(len(inputPaths),
+      progressbar.OptionSetDescription("[cyan][Encrypting files...][reset]"),
+      progressbar.OptionSetWriter(os.Stderr),
+      progressbar.OptionShowCount(),
+      progressbar.OptionShowBytes(true),
+      progressbar.OptionEnableColorCodes(true),
+      )
+
     for i := 0; i < len(inputPaths); i++ {
 			err := EncryptFile(inputPaths[i], outputPaths[i], key)
 			if err != nil {
 				color.Red("Error encrypting: %v", err)
 			} else {
-				color.Green("Encryption successful for %s", inputPaths)
+        progress.Add(1)
+				color.Green("\nEncryption successful for %s", inputPaths)
 			}
 		}
+    progress.Finish()
 	},
 }
 
