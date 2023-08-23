@@ -14,6 +14,10 @@ compression using AES encryption and gzip compression.
 - [x] Encrypting and Decrypting multiple files at once(if possible a dir)
 - [x] Progress bar
 
+## Installation
+
+`go install https://github.com/Oluwaseun241/hexlock`
+
 ## Usage
 
 `./hexlock [options]`
