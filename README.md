@@ -30,4 +30,4 @@ compression using AES encryption and gzip compression.
 
 ## License
 
-This project is licensed under the [MIT Licence]().
+This project is licensed under the [MIT Licence](https://github.com/Oluwaseun241/hexlock/blob/cobra/LICENCE).
