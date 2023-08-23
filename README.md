@@ -3,7 +3,7 @@
 HexLock is a command-line tool for file encryption and
 compression using AES encryption and gzip compression.
 
-![demo](https://github.com/Oluwaseun241/images/demo.png)
+![demo img](https://github.com/Oluwaseun241/hexlock/blob/main/images/demo)
 
 ## Features
 
