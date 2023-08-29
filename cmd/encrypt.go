@@ -6,8 +6,9 @@ import (
 	"crypto/rand"
 	"os"
 
-	"github.com/schollz/progressbar/v3"
+	"github.com/Oluwaseun241/hexlock/internal"
 	"github.com/fatih/color"
+	"github.com/schollz/progressbar/v3"
 	"github.com/spf13/cobra"
 )
 
@@ -20,8 +21,9 @@ var EncryptCmd = &cobra.Command{
 		
     inputPaths, _ := cmd.Flags().GetStringSlice("input")
 		outputPaths, _ := cmd.Flags().GetStringSlice("output")
-		key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG")
-    
+		//key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG")
+    key := internal.GenerateKey()    
+
     progress := progressbar.NewOptions(len(inputPaths),
       progressbar.OptionSetDescription("[cyan][Encrypting files...][reset]"),
       progressbar.OptionSetWriter(os.Stderr),

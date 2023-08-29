@@ -11,7 +11,7 @@ compression using AES encryption and gzip compression.
 - Decrypt encrypted files
 - Compress files using gzip compression
 
-- [x] Encrypting and Decrypting multiple files at once(if possible a dir)
+- [x] Encrypting and Decrypting multiple files at once
 - [x] Progress bar
 
 ## Installation
@@ -26,12 +26,11 @@ go install github.com/Oluwaseun241/hexlock
 
 ```
 # Encrypt file
-./hexlock -i [filepath] -o [filepath] -mode encrypt
+./hexlock encrypt -i [filepath] -o [filepath]
 # Decrypt an encrypted file
-./hexlock -i [filepath] -o [filepath] -mode decrypt
+./hexlock decrypt -i [filepath] -o [filepath]
 # Compress file
-./hexlock -i [filepath] -o [filepath] -mode compress
-
+./hexlock compress -i [filepath] -o [filepath]
 ```
 
 > For multiple files separate by comma
