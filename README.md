@@ -33,6 +33,8 @@ go install github.com/Oluwaseun241/hexlock
 ./hexlock compress -i [filepath] -o [filepath]
 ```
 
+**NOTE**
+
 > For multiple files separate by comma
 
 ## License
