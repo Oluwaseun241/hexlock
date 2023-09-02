@@ -36,6 +36,7 @@ go install github.com/Oluwaseun241/hexlock
 **NOTE**
 
 > For multiple files separate by comma
+> To be able to decrypt from another computer, please provide your own key when encrypting
 
 ## License
 
