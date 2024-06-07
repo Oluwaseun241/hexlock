@@ -21,7 +21,6 @@ var EncryptCmd = &cobra.Command{
 		
     inputPaths, _ := cmd.Flags().GetStringSlice("input")
 		outputPaths, _ := cmd.Flags().GetStringSlice("output")
-		//key := []byte("WGcDZK7dekM06L4ORZpTcigfn6NLD9hG")
     key := internal.GenerateKey()    
 
     progress := progressbar.NewOptions(len(inputPaths),
